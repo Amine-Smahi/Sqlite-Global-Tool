@@ -23,7 +23,7 @@ Linux/macOS:
     echo "export PATH=\"\$PATH:\$HOME/.dotnet/tools\"" >> ~/.bash_profile
 * Finaly run
 
-      user$ Goli <Your Text>
+      user$ sqlite-tool --h
 * Support me by making a <img style="margin-bottom: -20px;" src="https://user-images.githubusercontent.com/24621701/44811262-193e6e00-abcc-11e8-8e61-e52d8c78d5c9.png" /> for the repo and thank you :D , If you want to contribute to the project and make it better, your help is very welcome. 
 ## Screenshot
 ![image](https://user-images.githubusercontent.com/24621701/46575019-41fc1500-c97b-11e8-9688-52bd94895b1b.png)

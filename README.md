@@ -26,7 +26,7 @@ Linux/macOS:
       user$ sqlite-tool --h
 * Support me by making a <img style="margin-bottom: -20px;" src="https://user-images.githubusercontent.com/24621701/44811262-193e6e00-abcc-11e8-8e61-e52d8c78d5c9.png" /> for the repo and thank you :D , If you want to contribute to the project and make it better, your help is very welcome. 
 ## Screenshot
-![image](https://user-images.githubusercontent.com/24621701/46575111-19751a80-c97d-11e8-9c1e-7053188d5498.png)
+![image](https://user-images.githubusercontent.com/24621701/46575145-cbace200-c97d-11e8-8e1c-cce273fc9826.png)
 
 ## License 
 This project is under MIT License

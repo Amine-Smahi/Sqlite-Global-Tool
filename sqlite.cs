@@ -19,39 +19,42 @@ namespace sqlite_Global_tool
 
             if (args.Length <= 2 && args.Length >= 1)
             {
-                if (args[0] == "-db")
+                switch (args[0])
                 {
-                    SaveValue(args[1]);
-                    DbPath = args[1];
-                }
-                if (args[0] == "-q")
-                {
-                    if(DbPath == "empty"){
-                        Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
+                    case "-db":
+                        SaveValue(args[1]);
+                        DbPath = args[1];
+                        break;
+                    case "-q":
+                        if (DbPath == "empty")
+                        {
+                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            ExecuteQuery(args[1]);
+                        }
+                        break;
+                    case "-r":
+                        if (DbPath == "empty")
+                        {
+                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            ExecuteQueryWithResult(args[1]);
+                        }
+                        break;
+                    case "--h":
+                        Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0");
+                        Console.WriteLine("\nOptions:");
+                        Console.WriteLine(@"   -db ""Sqlite Database Path""");
+                        Console.WriteLine(@"   -q  ""Query to execute""");
+                        Console.WriteLine(@"   -r  ""Query to execute with result""");
                         Console.WriteLine();
-                    }
-                    else{
-                    ExecuteQuery(args[1]);
-                    }
-                }
-                else if (args[0] == "-r")
-                {
-                    if(DbPath == "empty"){
-                        Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
-                        Console.WriteLine();
-                    }
-                    else{
-                    ExecuteQueryWithResult(args[1]);
-                    }
-                }
-                else if(args[0] == "--h")
-                {
-                    Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0");
-                    Console.WriteLine("\nOptions:");
-                    Console.WriteLine(@"   -db ""Sqlite Database Path""");
-                    Console.WriteLine(@"   -q  ""Query to execute""");
-                    Console.WriteLine(@"   -r  ""Query to execute with result""");
-                    Console.WriteLine();
+                        break;
                 }
             }
             else

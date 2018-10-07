@@ -1,9 +1,8 @@
 using System;
 using System.IO;
 using Microsoft.Data.Sqlite;
-using testconsole;
 
-namespace sqlite_app
+namespace sqlite_Global_tool
 {
     class sqlite
     {
@@ -11,7 +10,6 @@ namespace sqlite_app
         static void Main(string[] args)
         {
             DbPath = ReadVariable();
-
             if (args.Length <= 2 && args.Length >= 1)
             {
                 switch (args[0])

@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using Microsoft.Data.Sqlite;
+using testconsole;
 
-namespace sqlite_Global_tool
+namespace sqlite_app
 {
     class sqlite
     {
@@ -10,12 +11,6 @@ namespace sqlite_Global_tool
         static void Main(string[] args)
         {
             DbPath = ReadVariable();
-                if (DbPath == "empty")
-                {
-                        Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0 <=");
-                        Console.WriteLine("       Check the help section by typing sqlite --h \n");
-                }
-                
 
             if (args.Length <= 2 && args.Length >= 1)
             {
@@ -65,41 +60,51 @@ namespace sqlite_Global_tool
         }
         static void ExecuteQueryWithResult(string query)
         {
-            try{
-            int count = 0;
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = DbPath;
-            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            try
             {
-                connection.Open();
-                var selectCmd = connection.CreateCommand();
-                selectCmd.CommandText = query;
-
-                using (var reader = selectCmd.ExecuteReader())
+                if (DbPath == "empty")
                 {
-                    count = reader.FieldCount;
-                    int numberRecord = 0;
-                    while (reader.Read())
+                    Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0 <=");
+                    Console.WriteLine("       Check the help section by typing sqlite --h \n");
+                }
+                else
+                {
+                    int count = 0;
+                    var connectionStringBuilder = new SqliteConnectionStringBuilder();
+                    connectionStringBuilder.DataSource = DbPath;
+                    using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
                     {
-                        numberRecord++;
-                    }
-                    string[,] arrValues = new string[numberRecord + 1, count];
-                    for (int i = 0; i < count; i++)
-                    {
-                        arrValues[0, i] = " " + reader.GetName(i) + " ";
-                        int j = 1;
-                        while (reader.Read())
+                        connection.Open();
+                        var selectCmd = connection.CreateCommand();
+                        selectCmd.CommandText = query;
+
+                        using (var reader = selectCmd.ExecuteReader())
                         {
-                            arrValues[j, i] = " " + reader[reader.GetName(i)].ToString() + " ";
-                            j++;
+                            count = reader.FieldCount;
+                            int numberRecord = 0;
+                            while (reader.Read())
+                            {
+                                numberRecord++;
+                            }
+                            string[,] arrValues = new string[numberRecord + 1, count];
+                            for (int i = 0; i < count; i++)
+                            {
+                                arrValues[0, i] = " " + reader.GetName(i) + " ";
+                                int j = 1;
+                                while (reader.Read())
+                                {
+                                    arrValues[j, i] = " " + reader[reader.GetName(i)].ToString() + " ";
+                                    j++;
+                                }
+                            }
+                            Console.WriteLine();
+                            ArrayPrinter.PrintToConsole(arrValues);
                         }
                     }
-                    Console.WriteLine();
-                    ArrayPrinter.PrintToConsole(arrValues);
                 }
             }
-            }
-            catch(Exception){
+            catch (Exception)
+            {
                 Console.WriteLine("\n There is an error in your sql syntax");
                 Console.WriteLine("                OR");
                 Console.WriteLine(" The query does not contain a select\n");
@@ -108,24 +113,34 @@ namespace sqlite_Global_tool
 
         static void ExecuteQuery(string query)
         {
-            try{
-            var connectionStringBuilder = new SqliteConnectionStringBuilder();
-            connectionStringBuilder.DataSource = DbPath;
-            using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+            try
             {
-                connection.Open();
-
-                using (var transaction = connection.BeginTransaction())
+                if (DbPath == "empty")
                 {
-                    var insertCmd = connection.CreateCommand();
-                    insertCmd.CommandText = query;
-                    insertCmd.ExecuteNonQuery();
-                    transaction.Commit();
+                    Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0 <=");
+                    Console.WriteLine("       Check the help section by typing sqlite --h \n");
+                }
+                else
+                {
+                    var connectionStringBuilder = new SqliteConnectionStringBuilder();
+                    connectionStringBuilder.DataSource = DbPath;
+                    using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
+                    {
+                        connection.Open();
+
+                        using (var transaction = connection.BeginTransaction())
+                        {
+                            var insertCmd = connection.CreateCommand();
+                            insertCmd.CommandText = query;
+                            insertCmd.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                    }
+                    Console.WriteLine("\n Query executed successfully \n");
                 }
             }
-            Console.WriteLine("\n Query executed successfully \n");
-            }
-            catch(Exception){
+            catch (Exception)
+            {
                 Console.WriteLine("\n There is an error in your sql syntax \n");
             }
         }

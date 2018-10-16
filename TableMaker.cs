@@ -3,31 +3,26 @@ using System.IO;
 
 namespace sqlite_Global_tool
 {
-    class ArrayPrinter
+    internal static class ArrayPrinter
     {
-
-        static bool isLeftAligned = false;
-        const string cellLeftTop = "┌";
-        const string cellRightTop = "┐";
-        const string cellLeftBottom = "└";
-        const string cellRightBottom = "┘";
-        const string cellHorizontalJointTop = "┬";
-        const string cellHorizontalJointbottom = "┴";
-        const string cellVerticalJointLeft = "├";
-        const string cellTJoint = "┼";
-        const string cellVerticalJointRight = "┤";
-        const string cellHorizontalLine = "─";
-        const string cellVerticalLine = "│";
+        private const string CellLeftTop = "┌";
+        private const string CellRightTop = "┐";
+        private const string CellLeftBottom = "└";
+        private const string CellRightBottom = "┘";
+        private const string CellVerticalJointLeft = "├";
+        private const string CellTJoint = "┼";
+        private const string CellVerticalJointRight = "┤";
+        private const string CellVerticalLine = "│";
 
         private static int GetMaxCellWidth(string[,] arrValues)
         {
-            int maxWidth = 1;
+            var maxWidth = 1;
 
-            for (int i = 0; i < arrValues.GetLength(0); i++)
+            for (var i = 0; i < arrValues.GetLength(0); i++)
             {
-                for (int j = 0; j < arrValues.GetLength(1); j++)
+                for (var j = 0; j < arrValues.GetLength(1); j++)
                 {
-                    int length = arrValues[i, j].Length;
+                    var length = arrValues[i, j].Length;
                     if (length > maxWidth)
                     {
                         maxWidth = length;
@@ -40,43 +35,43 @@ namespace sqlite_Global_tool
 
         private static string GetDataInTableFormat(string[,] arrValues)
         {
-            string formattedString = string.Empty;
+            var formattedString = string.Empty;
 
             if (arrValues == null)
                 return formattedString;
 
-            int dimension1Length = arrValues.GetLength(0);
-            int dimension2Length = arrValues.GetLength(1);
+            var dimension1Length = arrValues.GetLength(0);
+            var dimension2Length = arrValues.GetLength(1);
 
-            int maxCellWidth = GetMaxCellWidth(arrValues);
-            int indentLength = (dimension2Length * maxCellWidth) + (dimension2Length - 1);
+            var maxCellWidth = GetMaxCellWidth(arrValues);
+            var indentLength = (dimension2Length * maxCellWidth) + (dimension2Length - 1);
             //printing top line;
-            formattedString = string.Format("{0}{1}{2}{3}", cellLeftTop, Indent(indentLength), cellRightTop, System.Environment.NewLine);
+            formattedString = $"{CellLeftTop}{Indent(indentLength)}{CellRightTop}{Environment.NewLine}";
 
-            for (int i = 0; i < dimension1Length; i++)
+            for (var i = 0; i < dimension1Length; i++)
             {
-                string lineWithValues = cellVerticalLine;
-                string line = cellVerticalJointLeft;
-                for (int j = 0; j < dimension2Length; j++)
+                var lineWithValues = CellVerticalLine;
+                var line = CellVerticalJointLeft;
+                for (var j = 0; j < dimension2Length; j++)
                 {
-                    string value = (isLeftAligned) ? arrValues[i, j].PadRight(maxCellWidth, ' ') : arrValues[i, j].PadLeft(maxCellWidth, ' ');
-                    lineWithValues += string.Format("{0}{1}", value, cellVerticalLine);
+                    var value = arrValues[i, j].PadLeft(maxCellWidth, ' ');
+                    lineWithValues += string.Format("{0}{1}", value, CellVerticalLine);
                     line += Indent(maxCellWidth);
                     if (j < (dimension2Length - 1))
                     {
-                        line += cellTJoint;
+                        line += CellTJoint;
                     }
                 }
-                line += cellVerticalJointRight;
-                formattedString += string.Format("{0}{1}", lineWithValues, System.Environment.NewLine);
+                line += CellVerticalJointRight;
+                formattedString += string.Format("{0}{1}", lineWithValues, Environment.NewLine);
                 if (i < (dimension1Length - 1))
                 {
-                    formattedString += string.Format("{0}{1}", line, System.Environment.NewLine);
+                    formattedString += string.Format("{0}{1}", line, Environment.NewLine);
                 }
             }
 
             //printing bottom line
-            formattedString += string.Format("{0}{1}{2}{3}", cellLeftBottom, Indent(indentLength), cellRightBottom, System.Environment.NewLine);
+            formattedString += $"{CellLeftBottom}{Indent(indentLength)}{CellRightBottom}{Environment.NewLine}";
             return formattedString;
         }
 
@@ -90,10 +85,7 @@ namespace sqlite_Global_tool
             if (arrValues == null)
                 return;
 
-            if (writer == null)
-                return;
-
-            writer.Write(GetDataInTableFormat(arrValues));
+            writer?.Write(GetDataInTableFormat(arrValues));
         }
 
         public static void PrintToConsole(string[,] arrValues)

@@ -20,33 +20,31 @@ namespace sqlite_Global_tool
                             SaveValue(args[1]);
                             _dbPath = args[1];
                             break;
+                        case "-q" when _dbPath == "empty":
+                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
+                            Console.WriteLine();
+                            break;
                         case "-q":
-                            if (_dbPath == "empty")
-                            {
-                                Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
-                                Console.WriteLine();
-                            }
-                            else
-                            {
-                                ExecuteQuery(args[1]);
-                            }
+                            ExecuteQuery(args[1]);
+                            break;
+                        case "-r" when _dbPath == "empty":
+                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
+                            Console.WriteLine();
                             break;
                         case "-r":
-                            if (_dbPath == "empty")
-                            {
-                                Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
-                                Console.WriteLine();
-                            }
-                            else
-                            {
-                                ExecuteQueryWithResult(args[1], false);
-                            }
+                            ExecuteQueryWithResult(args[1], false);
                             break;
                         case "-s":
+                        {
                             if (args[1] != null)
                             {
                                 ExecuteQueryWithResult(args[1], true);
                             }
+                            break;
+                        }
+                        default:
+                            Console.WriteLine("\n  Command not found check the option --h for more information");
+                            Console.WriteLine();
                             break;
                     }
 

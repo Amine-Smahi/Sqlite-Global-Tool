@@ -21,15 +21,19 @@ namespace sqlite_Global_tool
                             _dbPath = args[1];
                             break;
                         case "-q" when _dbPath == "empty":
-                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
-                            Console.WriteLine();
+                            Console.Write("\n Please Specify the sqlite database path first by typing ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(@"-db ""path""" + Environment.NewLine);
+                            Console.ResetColor();
                             break;
                         case "-q":
                             ExecuteQuery(args[1]);
                             break;
                         case "-r" when _dbPath == "empty":
-                            Console.WriteLine(@" Please Specify the sqlite database path first by typing -db ""path""");
-                            Console.WriteLine();
+                            Console.Write("\n Please Specify the sqlite database path first by typing ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(@"-db ""path""" + Environment.NewLine);
+                            Console.ResetColor();
                             break;
                         case "-r":
                             ExecuteQueryWithResult(args[1], false);
@@ -43,8 +47,11 @@ namespace sqlite_Global_tool
                             break;
                         }
                         default:
-                            Console.WriteLine("\n  Command not found check the option --h for more information");
-                            Console.WriteLine();
+                            Console.Write("\n  Command not found check the option ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(@"--h");
+                            Console.ResetColor();
+                            Console.Write(" for more information \n\n");
                             break;
                     }
 
@@ -62,7 +69,10 @@ namespace sqlite_Global_tool
                     Console.WriteLine("\n   Need to insert a value for the option\n");
                     break;
                 default:
-                    Console.WriteLine("\n   Check the help section by typing -h\n");
+                    Console.Write("\n   Check the help section by typing ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("sqlite-tool --h \n");
+                    Console.ResetColor();
                     break;
             }
         }
@@ -73,8 +83,11 @@ namespace sqlite_Global_tool
             {
                 if (_dbPath == "empty")
                 {
-                    Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0 <=");
-                    Console.WriteLine("       Check the help section by typing sqlite --h \n");
+                    Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.1 <=");
+                    Console.Write("       Check the help section by typing sqlite ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("sqlite-tool --h \n");
+                    Console.ResetColor();
                 }
                 else
                 {
@@ -133,10 +146,14 @@ namespace sqlite_Global_tool
                 if (_dbPath == "empty")
                 {
                     Console.WriteLine("\n => Welcome to sqlite .net core global tool version 1.0 <=");
-                    Console.WriteLine("       Check the help section by typing sqlite --h \n");
+                    Console.Write("       Check the help section by typing ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("sqlite-tool --h \n");
+                    Console.ResetColor();
                 }
                 else
                 {
+                    if (!TestConnectionDatabase()) return;
                     var connectionStringBuilder = new SqliteConnectionStringBuilder {DataSource = _dbPath};
                     using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
                     {
@@ -186,6 +203,26 @@ namespace sqlite_Global_tool
             sw.Close();
             Console.WriteLine("\n Database saved successfully \n");
         }
-    }
 
+        private static bool TestConnectionDatabase()
+        {
+            if (File.Exists(_dbPath)) return false;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("the database doesn't exist in this path");
+            Console.ResetColor();
+            Console.WriteLine("Would you like to create it ? (y/n)");
+            var response = Console.ReadLine();
+            if (response == "y")
+            {
+                Console.WriteLine(" Creating database ...");
+                Console.WriteLine(" Executing query ...");
+            }
+            else
+            {
+                Console.WriteLine(" \n Cant execute query.\n");
+                return false;
+            }
+            return false;
+        }
+    }
 }

@@ -23,7 +23,7 @@ namespace sqlite_Global_tool
                         case "-q" when _dbPath == "empty":
                             Console.Write("\n Please Specify the sqlite database path first by typing ");
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(@"-db ""path""" + Environment.NewLine);
+                            Console.Write(@"-db ""path""" + Environment.NewLine + Environment.NewLine);
                             Console.ResetColor();
                             break;
                         case "-q":
@@ -32,7 +32,7 @@ namespace sqlite_Global_tool
                         case "-r" when _dbPath == "empty":
                             Console.Write("\n Please Specify the sqlite database path first by typing ");
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write(@"-db ""path""" + Environment.NewLine);
+                            Console.Write(@"-db ""path""" + Environment.NewLine + Environment.NewLine);
                             Console.ResetColor();
                             break;
                         case "-r":
@@ -91,6 +91,7 @@ namespace sqlite_Global_tool
                 }
                 else
                 {
+                    if (!TestConnectionDatabase()) return;
                     var connectionStringBuilder = new SqliteConnectionStringBuilder {DataSource = _dbPath};
                     using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
                     {
@@ -113,6 +114,7 @@ namespace sqlite_Global_tool
                             {
                                 numberRecord++;
                             }
+
                             var arrValues = new string[numberRecord + 1, count];
                             for (var i = 0; i < count; i++)
                             {
@@ -124,6 +126,7 @@ namespace sqlite_Global_tool
                                     j++;
                                 }
                             }
+
                             Console.WriteLine();
                             ArrayPrinter.PrintToConsole(arrValues);
                         }
@@ -134,7 +137,7 @@ namespace sqlite_Global_tool
             {
                 Console.WriteLine("\n There is an error in your sql syntax");
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message + "\n");
+                Console.WriteLine("  "+ex.Message + "\n");
                 Console.ResetColor();
             }
         }
@@ -207,22 +210,20 @@ namespace sqlite_Global_tool
         private static bool TestConnectionDatabase()
         {
             if (File.Exists(_dbPath)) return false;
+            Console.Write("\n The database doesn't exist in this path, you can change the path by typing ");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("the database doesn't exist in this path");
+            Console.Write(@"-db ""path"""+ Environment.NewLine);
             Console.ResetColor();
-            Console.WriteLine("Would you like to create it ? (y/n)");
+            Console.WriteLine(" Would you like to create it ? (y/n)");
             var response = Console.ReadLine();
             if (response == "y")
             {
-                Console.WriteLine(" Creating database ...");
-                Console.WriteLine(" Executing query ...");
+                Console.WriteLine("  Creating database ...");
+                Console.WriteLine("  Executing query ...");
+                return true;
             }
-            else
-            {
                 Console.WriteLine(" \n Cant execute query.\n");
                 return false;
-            }
-            return false;
         }
     }
 }

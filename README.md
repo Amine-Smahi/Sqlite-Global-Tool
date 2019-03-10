@@ -11,7 +11,7 @@ The steps are very easy you only have to
       user$ 2.1.402
 * A single command allows you to download and install the tool
   
-      user$ dotnet tool install --global sqlite-global-tool --version 1.0.0 
+      user$ dotnet tool install --global sqlite-global-tool 
 * Add the tool to the enironement variable 
 
 Windows:

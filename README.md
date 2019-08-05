@@ -1,5 +1,6 @@
 # Sqlite-Global-Tool
 SQLite .NET Core global tool project that provides a simple command-line program that allows the user to manually enter and execute SQL statements with or without showing query results against an SQLite database.
+
 ## What is .NET Core global tools
 A .NET Core global tool is a special NuGet package that contains a console application. When installing a tool, .NET Core CLI will download and make your console tool available as a new command.
 
